@@ -10,16 +10,16 @@
     tools:context="com.jce.ant.project.MainActivity">
 
     <TextView
+        android:id="@+id/chooseFormat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="@string/chooseFormatLbl" />
 
-    <Button
+    <com.jce.ant.project.MainView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/Button01"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="60dp" />
+        android:id="@+id/mainView"
+        android:layout_marginTop="30dp" />
+
+
 </RelativeLayout>

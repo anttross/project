@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Project</string>
+    <string name="chooseFormatLbl">Choose your canvas format</string>
+
 </resources>
