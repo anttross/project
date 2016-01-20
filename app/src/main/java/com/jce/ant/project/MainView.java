@@ -35,8 +35,8 @@ public class MainView extends View {
         int side= (w<h?w:h)*2/3;
 
         canvas.drawRect((w-side)/2, 0, (w-side)/2+side, side, paint);
-        canvas.drawRect((w-side*3/2)/2, h, (w-side*3/2)/2+(side*3/2), h+side, paint);
-        canvas.drawRect((w-side)/2, h*2,(w-side)/2+side ,h*2+side*3/2, paint);
+       /* canvas.drawRect((w-side*3/2)/2, h, (w-side*3/2)/2+(side*3/2), h+side, paint);
+        canvas.drawRect((w-side)/2, h*2,(w-side)/2+side ,h*2+side*3/2, paint);*/
     }
 
     public MainView(Context context) {

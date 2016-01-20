@@ -9,24 +9,41 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.jce.ant.project.EditActivity">
 
-    <ImageView
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Edit your canvas"
+        android:id="@+id/ancorTextView"
+        android:paddingBottom="15dp"
+        />
+
+    <ImageView
+
         android:id="@+id/imageView"
-        android:layout_alignTop="@+id/editView"
-        android:scaleType="centerCrop"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+
+        android:scaleType="fitCenter"
+
         android:layout_alignRight="@+id/editView"
         android:layout_alignEnd="@+id/editView"
+        android:layout_alignLeft="@+id/editView"
+        android:layout_alignStart="@+id/editView"
+
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
         android:layout_above="@+id/addText"
-        android:layout_marginBottom="43dp" />
+        android:layout_alignTop="@+id/editView"
+        android:layout_marginBottom="95dp"
+
+
+        />
 
     <com.jce.ant.project.EditView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/editView"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="55dp" />
 
     <ImageButton
         android:layout_width="50dp"

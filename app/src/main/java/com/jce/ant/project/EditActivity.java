@@ -3,12 +3,15 @@ package com.jce.ant.project;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.PointF;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -30,8 +33,16 @@ public class EditActivity extends AppCompatActivity {
         view = new EditView(this);
         view = (EditView) findViewById(R.id.editView);
         imgView = (ImageView) findViewById(R.id.imageView);
+     /*  // imgView.layout(0,0,50,50);
+        int x,y,z,a,b,c;
+        x = imgView.getWidth();
+        y= imgView.getMeasuredWidth();
+        z = imgView.getMeasuredWidthAndState();
+        a=imgView.getMaxWidth();
+        b=imgView.getMinimumWidth();
 
-
+        System.out.println("#### "+a+" "+b+" "+x+" "+y+" "+z);
+*/
         addBtn = (ImageButton) findViewById(R.id.addPic);
 
         addBtn.setOnClickListener(new View.OnClickListener() {
@@ -42,6 +53,40 @@ public class EditActivity extends AppCompatActivity {
 
             }
         });
+
+
+
+        imgView.setOnTouchListener(new View.OnTouchListener() {
+            PointF DownPT = new PointF(); // Record Mouse Position When Pressed Down
+            PointF StartPT = new PointF(); // Record Start Position of 'img'
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int eid = event.getAction();
+                switch (eid) {
+                    case MotionEvent.ACTION_MOVE:
+                        PointF mv = new PointF(event.getX() - DownPT.x, event.getY() - DownPT.y);
+                        imgView.setX((int) (StartPT.x + mv.x));
+                        imgView.setY((int) (StartPT.y + mv.y));
+                        StartPT = new PointF(imgView.getX(), imgView.getY());
+                        break;
+                    case MotionEvent.ACTION_DOWN:
+                        DownPT.x = event.getX();
+                        DownPT.y = event.getY();
+                        StartPT = new PointF(imgView.getX(), imgView.getY());
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        // Nothing have to do
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
+
+
+
     }
 
     public void loadImagefromGallery(View view) {

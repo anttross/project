@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -12,12 +14,12 @@ import android.view.View;
  * Created by Ant on 08-Jan-16.
  */
 public class EditView extends View {
-    Paint paint = new Paint();
+    Paint paint = new Paint();//(Paint.ANTI_ALIAS_FLAG);
     private Path path;
     int border=40;
 
     private void init (AttributeSet attrs, int defStyle){
-        paint = new Paint();
+       // paint = new Paint();
         // xr=yr=x=y = 0;
 
         paint.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -36,7 +38,11 @@ public class EditView extends View {
         //canvas.drawRect((w-side)/2, 0, (w-side)/2+side, side*3/2, paint);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(border);
-        canvas.drawRect((w - side) / 2 + (border / 2), border / 2, (w - side) / 2 + side+(border/2), side+(border/2), paint);
+        canvas.drawRect((w - side) / 2 + (border / 2), border / 2, (w - side) / 2 + side + (border / 2), side + (border / 2), paint);
+
+
+
+
 
     }
 
