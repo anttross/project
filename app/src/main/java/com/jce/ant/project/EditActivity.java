@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+import android.widget.ZoomControls;
 
 public class EditActivity extends AppCompatActivity {
     private static int RESULT_LOAD_IMG = 1;
@@ -24,28 +25,21 @@ public class EditActivity extends AppCompatActivity {
     EditViewMask mask;
     ImageView imgView;
     ImageButton addBtn;
+    ZoomControls zoom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
-       Log.e("TAG", "error");
+        Log.e("TAG", "error");
         view = new EditView(this);
         view = (EditView) findViewById(R.id.editView);
         mask = new EditViewMask(this);
         mask = (EditViewMask) findViewById(R.id.editViewMask);
         imgView = (ImageView) findViewById(R.id.imageView);
-     /*  // imgView.layout(0,0,50,50);
-        int x,y,z,a,b,c;
-        x = imgView.getWidth();
-        y= imgView.getMeasuredWidth();
-        z = imgView.getMeasuredWidthAndState();
-        a=imgView.getMaxWidth();
-        b=imgView.getMinimumWidth();
+        zoom = (ZoomControls) findViewById(R.id.zoomControls);
 
-        System.out.println("#### "+a+" "+b+" "+x+" "+y+" "+z);
-*/
         addBtn = (ImageButton) findViewById(R.id.addPic);
 
         addBtn.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +83,34 @@ public class EditActivity extends AppCompatActivity {
         });
 
 
+        zoom.setOnZoomInClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+
+                float x = imgView.getScaleX();
+                float y = imgView.getScaleY();
+
+                imgView.setScaleX((float) (x + 0.1));
+                imgView.setScaleY((float) (y + 0.1));
+            }
+        });
+
+        zoom.setOnZoomOutClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+
+
+                float x = imgView.getScaleX();
+                float y = imgView.getScaleY();
+
+                imgView.setScaleX((float) (x - 0.1));
+                imgView.setScaleY((float) (y - 0.1));
+            }
+        });
 
     }
 
