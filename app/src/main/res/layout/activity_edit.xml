@@ -12,25 +12,30 @@
 
 
     <ImageView
-
         android:id="@+id/imageView"
-
         android:scaleType="fitCenter"
-
         android:layout_alignRight="@+id/editView"
         android:layout_alignEnd="@+id/editView"
         android:layout_alignLeft="@+id/editView"
         android:layout_alignStart="@+id/editView"
-
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-
         android:layout_above="@+id/addText"
         android:layout_alignTop="@+id/editView"
-        android:layout_marginBottom="95dp"
+        android:layout_marginBottom="95dp" />
 
-
-        />
+    <EditText
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Add your title"
+        android:id="@+id/addTextView"
+        android:paddingBottom="95dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="30dp"
+        android:textColor="#000000" />
 
     <com.jce.ant.project.EditView
         android:layout_width="wrap_content"
@@ -41,8 +46,7 @@
     <com.jce.ant.project.EditViewMask
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editViewMask"
-        />
+        android:id="@+id/editViewMask" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -50,8 +54,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Edit your canvas"
         android:id="@+id/ancorTextView"
-        android:paddingBottom="15dp"
-        />
+        android:paddingBottom="15dp" />
 
     <ImageButton
         android:layout_width="50dp"

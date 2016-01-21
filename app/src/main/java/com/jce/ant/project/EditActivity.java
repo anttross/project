@@ -11,10 +11,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.ZoomControls;
 
@@ -25,6 +25,8 @@ public class EditActivity extends AppCompatActivity {
     EditViewMask mask;
     ImageView imgView;
     ImageButton addBtn;
+    EditText addEditText;
+    Button addTxt;
     ZoomControls zoom;
 
     @Override
@@ -37,11 +39,21 @@ public class EditActivity extends AppCompatActivity {
         view = (EditView) findViewById(R.id.editView);
         mask = new EditViewMask(this);
         mask = (EditViewMask) findViewById(R.id.editViewMask);
+
         imgView = (ImageView) findViewById(R.id.imageView);
         zoom = (ZoomControls) findViewById(R.id.zoomControls);
 
-        addBtn = (ImageButton) findViewById(R.id.addPic);
+        addEditText = (EditText)findViewById(R.id.addTextView);
+        addTxt = (Button)findViewById(R.id.addText);
+        addTxt.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                addEditText.setVisibility(View.VISIBLE);
+            }
+        });
+
+        addBtn = (ImageButton) findViewById(R.id.addPic);
         addBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -87,7 +99,6 @@ public class EditActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
 
                 float x = imgView.getScaleX();
                 float y = imgView.getScaleY();
@@ -101,8 +112,6 @@ public class EditActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
-
 
                 float x = imgView.getScaleX();
                 float y = imgView.getScaleY();
