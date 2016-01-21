@@ -5,15 +5,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.view.View;
 
 /**
  * Created by Ant on 08-Jan-16.
  */
-public class EditView extends View {
+public class EditViewMask extends View {
     Paint paint = new Paint();//(Paint.ANTI_ALIAS_FLAG);
     private Path path;
     int border=40;
@@ -22,39 +20,39 @@ public class EditView extends View {
        // paint = new Paint();
         // xr=yr=x=y = 0;
 
-        paint.setStyle(Paint.Style.FILL_AND_STROKE);
+        paint.setStyle(Paint.Style.FILL);
         path = new Path();
     }//init
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        paint.setStrokeWidth(5);
-        paint.setColor(Color.parseColor("#CC333333"));
-        int w = getWidth()-border;
+        /*int w = getWidth()-border;
         int h = getHeight()-border;
-        int side= (w<h?w:h);
+        int side= (w<h?w:h);*//*
+        EditActivity pic = new EditActivity();
+*/
+        paint.setStyle(Paint.Style.FILL);
+        paint.setStrokeWidth(0);
+        paint.setColor(Color.parseColor("#ffffffff"));
 
-        //canvas.drawRect((w-side)/2, 0, (w-side)/2+side, side*3/2, paint);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(border);
-        canvas.drawRect((w - side) / 2 + (border / 2), border / 2, (w - side) / 2 + side + (border / 2), side + (border / 2), paint);
-
+        canvas.drawRect(0,0, getWidth(), 110, paint);
+        canvas.drawRect(0,getWidth()+110, getWidth(), this.getHeight(), paint);
 
 
     }
 
 
 
-    public EditView(Context context) {
+    public EditViewMask(Context context) {
         super(context);
     }
 
-    public EditView(Context context, AttributeSet attrs) {
+    public EditViewMask(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public EditView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public EditViewMask(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 }

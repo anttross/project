@@ -21,6 +21,7 @@ public class EditActivity extends AppCompatActivity {
     private static int RESULT_LOAD_IMG = 1;
     String imgDecodableString;
     EditView view;
+    EditViewMask mask;
     ImageView imgView;
     ImageButton addBtn;
 
@@ -32,6 +33,8 @@ public class EditActivity extends AppCompatActivity {
        Log.e("TAG", "error");
         view = new EditView(this);
         view = (EditView) findViewById(R.id.editView);
+        mask = new EditViewMask(this);
+        mask = (EditViewMask) findViewById(R.id.editViewMask);
         imgView = (ImageView) findViewById(R.id.imageView);
      /*  // imgView.layout(0,0,50,50);
         int x,y,z,a,b,c;
