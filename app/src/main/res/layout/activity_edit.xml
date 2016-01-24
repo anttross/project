@@ -29,13 +29,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Add your title"
+        android:text="With love"
         android:id="@+id/addTextView"
         android:paddingBottom="95dp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:textSize="30dp"
-        android:textColor="#000000" />
+        android:textColor="#dd2222" />
 
     <com.jce.ant.project.EditView
         android:layout_width="wrap_content"
@@ -84,6 +85,26 @@
         android:id="@+id/zoomControls"
         android:layout_alignBottom="@+id/addPic"
         android:layout_centerHorizontal="true" />
+
+    <Spinner
+        android:id="@+id/textSizeSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/zoomControls"
+        android:layout_alignLeft="@+id/zoomControls"
+        android:layout_alignStart="@+id/zoomControls"
+        android:layout_alignRight="@+id/ancorTextView"
+        android:layout_alignEnd="@+id/ancorTextView" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order"
+        android:id="@+id/orderBtn"
+        android:layout_alignBottom="@+id/ancorTextView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 
 </RelativeLayout>

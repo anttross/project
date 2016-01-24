@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">Canvas</string>
-    <string name="chooseFormatLbl">Greeting page</string>
+    <string name="chooseFormatLbl">
+        להכניס את הזיכרונות שלך למסגרת הנכונה
+        \n
+יצרת תמונות היישר מהטלפון לקיר.
+        \n
+        במהירות, באיכות ובמחיר מצוין.
+    </string>
 
 </resources>

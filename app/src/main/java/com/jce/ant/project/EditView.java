@@ -9,6 +9,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Spinner;
 
 /**
  * Created by Ant on 08-Jan-16.
@@ -17,6 +18,7 @@ public class EditView extends View {
     Paint paint = new Paint();//(Paint.ANTI_ALIAS_FLAG);
     private Path path;
     int border=40;
+
 
     private void init (AttributeSet attrs, int defStyle){
        // paint = new Paint();

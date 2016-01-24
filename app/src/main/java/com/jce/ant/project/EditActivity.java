@@ -11,14 +11,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ZoomControls;
 
-public class EditActivity extends AppCompatActivity {
+public class EditActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private static int RESULT_LOAD_IMG = 1;
     String imgDecodableString;
     EditView view;
@@ -28,6 +31,8 @@ public class EditActivity extends AppCompatActivity {
     EditText addEditText;
     Button addTxt;
     ZoomControls zoom;
+    private Spinner textSizeChange;
+    private static final String[] paths = {"25", "30", "35", "45"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +68,57 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
+        textSizeChange = (Spinner)findViewById(R.id.textSizeSpinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditActivity.this,
+                android.R.layout.simple_spinner_item,paths);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        textSizeChange.setAdapter(adapter);
+        textSizeChange.setOnItemSelectedListener(this);
+
+
+    /*  addEditText.setOnLongClickListener(new View.OnLongClickListener() {
+
+
+          @Override
+          public boolean onLongClick(View v) {
+
+              System.out.println("### long click");
+             // addEditText.getEditableText();
+              return true;
+          }
+      });*/
+
+/*
+            //text move
+            addEditText.setOnTouchListener(new View.OnTouchListener() {
+                PointF DownPT = new PointF(); // Record Mouse Position When Pressed Down
+                PointF StartPT = new PointF(); // Record Start Position of 'img'
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    int eid = event.getAction();
+                    switch (eid) {
+                        case MotionEvent.ACTION_MOVE:
+                            PointF mv = new PointF(event.getX() - DownPT.x, event.getY() - DownPT.y);
+                            addEditText.setX((int) (StartPT.x + mv.x));
+                            addEditText.setY((int) (StartPT.y + mv.y));
+                            StartPT = new PointF(addEditText.getX(), addEditText.getY());
+                            break;
+                        case MotionEvent.ACTION_DOWN:
+                            DownPT.x = event.getX();
+                            DownPT.y = event.getY();
+                            StartPT = new PointF(addEditText.getX(), addEditText.getY());
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            // Nothing have to do
+                            break;
+                        default:
+                            break;
+                    }
+                    return true;
+                }
+            });*/
 
 
         imgView.setOnTouchListener(new View.OnTouchListener() {
@@ -165,6 +221,33 @@ public class EditActivity extends AppCompatActivity {
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
                     .show();
         }
+
+    }
+
+    public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
+
+        switch (position) {
+            case 0:
+                addEditText.setTextSize(Float.parseFloat(paths[0]));
+                break;
+            case 1:
+                addEditText.setTextSize(Float.parseFloat(paths[1]));
+                break;
+            case 2:
+                addEditText.setTextSize(Float.parseFloat(paths[2]));
+                break;
+            case 3:
+                addEditText.setTextSize(Float.parseFloat(paths[3]));
+                break;
+            default:
+                addEditText.setTextSize(Float.parseFloat(paths[1]));
+                break;
+
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 }

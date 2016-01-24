@@ -14,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textDirection="anyRtl"
         android:text="@string/chooseFormatLbl" />
 
     <ImageView
@@ -27,7 +28,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="Continue"
         android:id="@+id/startButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
