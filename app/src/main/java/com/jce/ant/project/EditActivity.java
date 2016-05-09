@@ -3,6 +3,7 @@ package com.jce.ant.project;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -21,7 +22,24 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ZoomControls;
 
-public class EditActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class EditActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnTouchListener {
+    private static final String TAG = "Touch";
+    // These matrices will be used to move and zoom image
+    Matrix matrix = new Matrix();
+    Matrix savedMatrix = new Matrix();
+
+    // We can be in one of these 3 states
+    static final int NONE = 0;
+    static final int DRAG = 1;
+    static final int ZOOM = 2;
+    int mode = NONE;
+
+    // Remember some things for zooming
+    PointF start = new PointF();
+    PointF mid = new PointF();
+    float oldDist = 1f;
+
+
     private static int RESULT_LOAD_IMG = 1;
     String imgDecodableString;
     EditView view;
@@ -42,14 +60,19 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         Log.e("TAG", "error");
         view = new EditView(this);
         view = (EditView) findViewById(R.id.editView);
+
         mask = new EditViewMask(this);
         mask = (EditViewMask) findViewById(R.id.editViewMask);
 
         imgView = (ImageView) findViewById(R.id.imageView);
+        // imgView.setOnTouchListener((View.OnTouchListener) this);
+        imgView.setOnTouchListener(this);
+
+
         zoom = (ZoomControls) findViewById(R.id.zoomControls);
 
-        addEditText = (EditText)findViewById(R.id.addTextView);
-        addTxt = (Button)findViewById(R.id.addText);
+        addEditText = (EditText) findViewById(R.id.addTextView);
+        addTxt = (Button) findViewById(R.id.addText);
         addTxt.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -68,60 +91,113 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
-        textSizeChange = (Spinner)findViewById(R.id.textSizeSpinner);
+        textSizeChange = (Spinner) findViewById(R.id.textSizeSpinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditActivity.this,
-                android.R.layout.simple_spinner_item,paths);
+                android.R.layout.simple_spinner_item, paths);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         textSizeChange.setAdapter(adapter);
         textSizeChange.setOnItemSelectedListener(this);
+    }
 
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                imgView = (ImageView) v;
 
-    /*  addEditText.setOnLongClickListener(new View.OnLongClickListener() {
+                // Dump touch event to log
+                dumpEvent(event);
 
-
-          @Override
-          public boolean onLongClick(View v) {
-
-              System.out.println("### long click");
-             // addEditText.getEditableText();
-              return true;
-          }
-      });*/
-
-/*
-            //text move
-            addEditText.setOnTouchListener(new View.OnTouchListener() {
-                PointF DownPT = new PointF(); // Record Mouse Position When Pressed Down
-                PointF StartPT = new PointF(); // Record Start Position of 'img'
-
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    int eid = event.getAction();
-                    switch (eid) {
-                        case MotionEvent.ACTION_MOVE:
-                            PointF mv = new PointF(event.getX() - DownPT.x, event.getY() - DownPT.y);
-                            addEditText.setX((int) (StartPT.x + mv.x));
-                            addEditText.setY((int) (StartPT.y + mv.y));
-                            StartPT = new PointF(addEditText.getX(), addEditText.getY());
-                            break;
-                        case MotionEvent.ACTION_DOWN:
-                            DownPT.x = event.getX();
-                            DownPT.y = event.getY();
-                            StartPT = new PointF(addEditText.getX(), addEditText.getY());
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            // Nothing have to do
-                            break;
-                        default:
-                            break;
-                    }
-                    return true;
+                // Handle touch events here...
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_DOWN:
+                        savedMatrix.set(matrix);
+                        start.set(event.getX(), event.getY());
+                        Log.d(TAG, "mode=DRAG");
+                        mode = DRAG;
+                        break;
+                    case MotionEvent.ACTION_POINTER_DOWN:
+                        oldDist = spacing(event);
+                        Log.d(TAG, "oldDist=" + oldDist);
+                        if (oldDist > 10f) {
+                            savedMatrix.set(matrix);
+                            midPoint(mid, event);
+                            mode = ZOOM;
+                            Log.d(TAG, "mode=ZOOM");
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_POINTER_UP:
+                        mode = NONE;
+                        Log.d(TAG, "mode=NONE");
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        if (mode == DRAG) {
+                            // ...
+                            matrix.set(savedMatrix);
+                            matrix.postTranslate(event.getX() - start.x,
+                                    event.getY() - start.y);
+                        } else if (mode == ZOOM) {
+                            float newDist = spacing(event);
+                            Log.d(TAG, "newDist=" + newDist);
+                            if (newDist > 10f) {
+                                matrix.set(savedMatrix);
+                                float scale = newDist / oldDist;
+                                matrix.postScale(scale, scale, mid.x, mid.y);
+                            }
+                        }
+                        break;
                 }
-            });*/
+
+                imgView.setImageMatrix(matrix);
+                imgView.invalidate();
+                return true; // indicate event was handled
+            }
 
 
-        imgView.setOnTouchListener(new View.OnTouchListener() {
+
+        /** Show an event in the LogCat view, for debugging */
+        private void dumpEvent(MotionEvent event) {
+            String names[] = { "DOWN", "UP", "MOVE", "CANCEL", "OUTSIDE",
+                    "POINTER_DOWN", "POINTER_UP", "7?", "8?", "9?" };
+            StringBuilder sb = new StringBuilder();
+            int action = event.getAction();
+            int actionCode = action & MotionEvent.ACTION_MASK;
+            sb.append("event ACTION_").append(names[actionCode]);
+            if (actionCode == MotionEvent.ACTION_POINTER_DOWN
+                    || actionCode == MotionEvent.ACTION_POINTER_UP) {
+                sb.append("(pid ").append(
+                        action >> MotionEvent.ACTION_POINTER_ID_SHIFT);
+                sb.append(")");
+            }
+            sb.append("[");
+            for (int i = 0; i < event.getPointerCount(); i++) {
+                sb.append("#").append(i);
+                sb.append("(pid ").append(event.getPointerId(i));
+                sb.append(")=").append((int) event.getX(i));
+                sb.append(",").append((int) event.getY(i));
+                if (i + 1 < event.getPointerCount())
+                    sb.append(";");
+            }
+            sb.append("]");
+            Log.d(TAG, sb.toString());
+        }
+
+        /** Determine the space between the first two fingers */
+        private float spacing(MotionEvent event) {
+            float x = event.getX(0) - event.getX(1);
+            float y = event.getY(0) - event.getY(1);
+            return (float)Math.sqrt(x * x + y * y);
+        }
+
+        /** Calculate the mid point of the first two fingers */
+        private void midPoint(PointF point, MotionEvent event) {
+            float x = event.getX(0) + event.getX(1);
+            float y = event.getY(0) + event.getY(1);
+            point.set(x / 2, y / 2);
+        }
+
+
+       /* imgView.setOnTouchListener(new View.OnTouchListener() {
             PointF DownPT = new PointF(); // Record Mouse Position When Pressed Down
             PointF StartPT = new PointF(); // Record Start Position of 'img'
 
@@ -148,10 +224,10 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
                 return true;
             }
-        });
+        });*/
 
 
-        zoom.setOnZoomInClickListener(new View.OnClickListener() {
+/*        zoom.setOnZoomInClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -177,9 +253,9 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
-    }
+    }*/
 
-    public void loadImagefromGallery(View view) {
+    private void loadImagefromGallery(View view) {
         // Create intent to Open Image applications like Gallery, Google Photos
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -250,4 +326,9 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+/*    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return false;
+    }*/
 }
