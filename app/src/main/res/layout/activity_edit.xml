@@ -13,7 +13,121 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:scaleType="fitCenter"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
         android:layout_alignRight="@+id/editView"
         android:layout_alignEnd="@+id/editView"
         android:layout_alignLeft="@+id/editView"
@@ -22,7 +136,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/addText"
         android:layout_alignTop="@+id/editView"
-        android:layout_marginBottom="95dp" />
+        android:layout_marginBottom="95dp"
+        android:scaleType="matrix"/>
 
     <EditText
         android:visibility="invisible"
@@ -79,22 +194,14 @@
         android:layout_alignParentStart="true"
         android:layout_marginBottom="0dp" />
 
-    <ZoomControls
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/zoomControls"
-        android:layout_alignBottom="@+id/addPic"
-        android:layout_centerHorizontal="true" />
-
     <Spinner
         android:id="@+id/textSizeSpinner"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_below="@+id/zoomControls"
-        android:layout_alignLeft="@+id/zoomControls"
-        android:layout_alignStart="@+id/zoomControls"
-        android:layout_alignRight="@+id/ancorTextView"
-        android:layout_alignEnd="@+id/ancorTextView" />
+        android:layout_alignBaseline="@+id/addText"
+        android:layout_alignBottom="@+id/addText"
+        android:layout_toRightOf="@+id/addText"
+        android:layout_toEndOf="@+id/addText" />
 
     <Button
         style="?android:attr/buttonStyleSmall"

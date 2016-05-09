@@ -48,7 +48,6 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
     ImageButton addBtn;
     EditText addEditText;
     Button addTxt;
-    ZoomControls zoom;
     private Spinner textSizeChange;
     private static final String[] paths = {"25", "30", "35", "45"};
 
@@ -67,9 +66,6 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         imgView = (ImageView) findViewById(R.id.imageView);
         // imgView.setOnTouchListener((View.OnTouchListener) this);
         imgView.setOnTouchListener(this);
-
-
-        zoom = (ZoomControls) findViewById(R.id.zoomControls);
 
         addEditText = (EditText) findViewById(R.id.addTextView);
         addTxt = (Button) findViewById(R.id.addText);
@@ -196,64 +192,6 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
             point.set(x / 2, y / 2);
         }
 
-
-       /* imgView.setOnTouchListener(new View.OnTouchListener() {
-            PointF DownPT = new PointF(); // Record Mouse Position When Pressed Down
-            PointF StartPT = new PointF(); // Record Start Position of 'img'
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int eid = event.getAction();
-                switch (eid) {
-                    case MotionEvent.ACTION_MOVE:
-                        PointF mv = new PointF(event.getX() - DownPT.x, event.getY() - DownPT.y);
-                        imgView.setX((int) (StartPT.x + mv.x));
-                        imgView.setY((int) (StartPT.y + mv.y));
-                        StartPT = new PointF(imgView.getX(), imgView.getY());
-                        break;
-                    case MotionEvent.ACTION_DOWN:
-                        DownPT.x = event.getX();
-                        DownPT.y = event.getY();
-                        StartPT = new PointF(imgView.getX(), imgView.getY());
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        // Nothing have to do
-                        break;
-                    default:
-                        break;
-                }
-                return true;
-            }
-        });*/
-
-
-/*        zoom.setOnZoomInClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                float x = imgView.getScaleX();
-                float y = imgView.getScaleY();
-
-                imgView.setScaleX((float) (x + 0.1));
-                imgView.setScaleY((float) (y + 0.1));
-            }
-        });
-
-        zoom.setOnZoomOutClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                float x = imgView.getScaleX();
-                float y = imgView.getScaleY();
-
-                imgView.setScaleX((float) (x - 0.1));
-                imgView.setScaleY((float) (y - 0.1));
-            }
-        });
-
-    }*/
 
     private void loadImagefromGallery(View view) {
         // Create intent to Open Image applications like Gallery, Google Photos
