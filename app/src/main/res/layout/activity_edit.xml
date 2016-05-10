@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -9,125 +10,14 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.jce.ant.project.EditActivity">
 
-
+<!--    <LinearLayout
+        android:id="@+id/linearposition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />-->
 
     <ImageView
         android:id="@+id/imageView"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
         android:layout_alignRight="@+id/editView"
         android:layout_alignEnd="@+id/editView"
         android:layout_alignLeft="@+id/editView"
@@ -136,8 +26,9 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/addText"
         android:layout_alignTop="@+id/editView"
-        android:layout_marginBottom="95dp"
         android:scaleType="matrix"/>
+       <!-- android:layout_marginBottom="95dp"-->
+
 
     <EditText
         android:visibility="invisible"
@@ -156,21 +47,14 @@
     <com.jce.ant.project.EditView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editView"
-        android:layout_marginTop="55dp" />
+        android:id="@+id/editView"/>
+       <!-- android:layout_marginTop="55dp"-->
+
 
     <com.jce.ant.project.EditViewMask
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/editViewMask" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Edit your canvas"
-        android:id="@+id/ancorTextView"
-        android:paddingBottom="15dp" />
 
     <ImageButton
         android:layout_width="50dp"
@@ -209,9 +93,9 @@
         android:layout_height="wrap_content"
         android:text="Order"
         android:id="@+id/orderBtn"
-        android:layout_alignBottom="@+id/ancorTextView"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@+id/imageView"
+        android:layout_alignRight="@+id/textSizeSpinner"
+        android:layout_alignEnd="@+id/textSizeSpinner" />
 
 
 </RelativeLayout>

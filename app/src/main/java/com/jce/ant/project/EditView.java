@@ -9,6 +9,9 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 /**
@@ -31,21 +34,24 @@ public class EditView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        paint.setStrokeWidth(5);
+/*
+        paint.setStrokeWidth(0);
+*/
         paint.setColor(Color.parseColor("#CC333333"));
-        int w = getWidth()-border;
-        int h = getHeight()-border;
+        int w = getWidth();//-border;
+        int h = getHeight();//-border;
         int side= (w<h?w:h);
 
         //canvas.drawRect((w-side)/2, 0, (w-side)/2+side, side*3/2, paint);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(border);
-        canvas.drawRect((w - side) / 2 + (border / 2), border / 2, (w - side) / 2 + side + (border / 2), side + (border / 2), paint);
 
+        paint.setStrokeWidth(border);
+
+/*        canvas.drawRect((w - side) / 2 + (border / 2), border / 2, (w - side) / 2 + side + (border / 2), side + (border / 2), paint);*/
+        canvas.drawRect(border / 2, border / 2, side - border / 2, side - border / 2, paint);
 
 
     }
-
 
 
     public EditView(Context context) {

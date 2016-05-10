@@ -1,12 +1,16 @@
 package com.jce.ant.project;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,8 +64,8 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         view = new EditView(this);
         view = (EditView) findViewById(R.id.editView);
 
-        mask = new EditViewMask(this);
-        mask = (EditViewMask) findViewById(R.id.editViewMask);
+       /* mask = new EditViewMask(this);
+        mask = (EditViewMask) findViewById(R.id.editViewMask);*/
 
         imgView = (ImageView) findViewById(R.id.imageView);
         // imgView.setOnTouchListener((View.OnTouchListener) this);
@@ -94,7 +98,12 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         textSizeChange.setAdapter(adapter);
         textSizeChange.setOnItemSelectedListener(this);
+
+
     }
+
+
+
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {

@@ -36,8 +36,8 @@ public class EditViewMask extends View {
         paint.setStrokeWidth(0);
         paint.setColor(Color.parseColor("#ffffffff"));
 
-        canvas.drawRect(0,0, getWidth(), 110, paint);
-        canvas.drawRect(0,getWidth()+110, getWidth(), this.getHeight(), paint);
+        //canvas.drawRect(0,0, getWidth(), 110, paint);
+        canvas.drawRect(0,getWidth(), getWidth(), this.getHeight(), paint);
 
 
     }
