@@ -52,6 +52,8 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
     ImageButton addBtn;
     EditText addEditText;
     Button addTxt;
+    Button orderBtn;
+
     private Spinner textSizeChange;
     private static final String[] paths = {"25", "30", "35", "45"};
 
@@ -81,11 +83,22 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
+        orderBtn = (Button) findViewById(R.id.orderBtn);
+        orderBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), OrderForm.class));
+
+            }
+        });
+
         addBtn = (ImageButton) findViewById(R.id.addPic);
         addBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+               // imgView.setImageResource(0);
                 loadImagefromGallery(view);
 
             }

@@ -93,9 +93,9 @@
         android:layout_height="wrap_content"
         android:text="Order"
         android:id="@+id/orderBtn"
-        android:layout_below="@+id/imageView"
-        android:layout_alignRight="@+id/textSizeSpinner"
-        android:layout_alignEnd="@+id/textSizeSpinner" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 
 </RelativeLayout>
