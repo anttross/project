@@ -106,14 +106,15 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
                 b.putInt("ImgLeft", getImgLeft());
                 b.putFloat("ImgSize", getImgSize());
                 b.putFloat("ImgAngle", getImgAngle());
-                b.putByteArray("ImgBody", getImgBody());
+                // b.putByteArray("ImgBody", getImgBody());
+                b.putString("ImgPath", uri);
 
                 intent.putExtras(b); //Put your id to your next Intent
                 startActivity(intent);
                 // finish();
 
 
-                 //startActivity(new Intent(getApplicationContext(), OrderForm.class));
+                //startActivity(new Intent(getApplicationContext(), OrderForm.class));
 
             }
         });
@@ -345,17 +346,10 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public byte[] getImgBody(){
-      //  return imgView.getImageMatrix();
-        Uri path = Uri.parse(uri);
-       // convertedPath = ;
         Bitmap bitmap = BitmapFactory.decodeFile((uri));
-
-       // BitmapDrawable drawable = (BitmapDrawable) imgView.getDrawable();
-        // Bitmap bitmap = drawable.getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] imageInByte = stream.toByteArray();
-        //long lengthbmp = imageInByte.length;
         return imageInByte;
     }
 
@@ -369,13 +363,15 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         return lengthbmp;
     }
     public String getImgName(){
-        //File file = new File(String.valueOf(selectedImage));
-        //return file.getName();
-        return uri;
+
+        return uri.substring(uri.lastIndexOf("/")+1);
     }
     public float getImgSize(){
         Display display = getWindowManager().getDefaultDisplay();
-        return imgView.getWidth()/(display.getWidth()-80);
+        int iw=imgView.getRight()-imgView.getLeft();
+        int dw =(display.getWidth()-80);
+        float  res =(float) iw/dw;
+        return res;
     }
 
     public int getImgTop(){
