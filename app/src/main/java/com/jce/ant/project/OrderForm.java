@@ -3,21 +3,53 @@ package com.jce.ant.project;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.StrictMode;
+import android.renderscript.Sampler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.util.Patterns;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class OrderForm extends AppCompatActivity {
     EditText name, mail, phone, address, city, zip, pob;
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
+   // public static final String shPref = "sharedPrefs";
+    Button placeOrder;
+    /*String fileName;
+    int fileSize, top, left;
+    float size, angle;
+    byte[] fileBody;
+
+    public OrderForm(String FileName, int FileSize, int Top, int Left, float Size, float Angle, byte[] FileBody){
+        this.fileName=FileName;
+        this.
+
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_form);
+
+        prefs = getSharedPreferences("shPref", Context.MODE_PRIVATE);
+        editor = prefs.edit();
 
         name = (EditText) findViewById(R.id.name);
         address = (EditText) findViewById(R.id.address);
@@ -26,6 +58,23 @@ public class OrderForm extends AppCompatActivity {
         pob = (EditText) findViewById(R.id.pob);
         mail = (EditText) findViewById(R.id.mail);
         phone = (EditText) findViewById(R.id.phone);
+
+        name.setText(prefs.getString("name", name.getText().toString()));
+        address.setText(prefs.getString("address", address.getText().toString()));
+        city.setText(prefs.getString("city", city.getText().toString()));
+        zip.setText(prefs.getString("zip", zip.getText().toString()));
+        pob.setText(prefs.getString("pob", pob.getText().toString()));
+        mail.setText(prefs.getString("mail", mail.getText().toString()));
+        phone.setText(prefs.getString("phone", phone.getText().toString()));
+
+        editor.putString("name", name.getText().toString());
+        editor.putString("address", address.getText().toString());
+        editor.putString("city", city.getText().toString());
+        editor.putString("zip", zip.getText().toString());
+        editor.putString("pob", pob.getText().toString());
+        editor.putString("mail", mail.getText().toString());
+        editor.putString("phone", phone.getText().toString());
+        editor.apply();
 
 
 
@@ -41,7 +90,132 @@ public class OrderForm extends AppCompatActivity {
             }
         }
 
+        TelephonyManager tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        String mPhoneNumber = tMgr.getLine1Number();
+       // phone.setText();
        /* TelephonyManager tMgr = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number();*/
+
+        placeOrder = (Button)findViewById(R.id.send);
+        placeOrder.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                String call="62.219.78.230", db="antont_co_il_canvas", un="antont_co_il_user", passwords="31A5959nt";
+                Connection connect = CONN(un, passwords, db, call);
+                //rs;
+
+                try {
+
+                    PreparedStatement statement = connect.prepareStatement(BuildProcedureWithParameters());
+                     //final ArrayList list = new ArrayList();
+                    ResultSet rs = null;
+                    rs = statement.executeQuery();
+                    String res = "no result";
+                    if(rs!=null)
+                    res = rs.getString("ORDER_ID");
+
+                   // String res = rs.getString(1);
+                    //while (rs.next()) {
+                    //    list.add(rs.getString("ORDER_ID"));
+                   // }
+                    Toast.makeText(OrderForm.this, res,
+                            Toast.LENGTH_LONG).show();
+
+                } catch (SQLException e) {
+                    Toast.makeText(OrderForm.this, e.getMessage().toString(),
+                            Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+
+    }
+private String BuildProcedureWithParameters() {
+    Bundle b = getIntent().getExtras();
+    if(b==null)
+        return "error";
+    StringBuilder query = new StringBuilder();
+    query.append(
+            "DECLARE Pct_Tbl [antont_co_il_user].PICTURES_TBL" +
+                    "\nINSERT Pct_Tbl (" +
+                    "\t[FileName],\n" +
+                    "\t[FileBody],\n" +
+                    "\t[FileSize],\n" +
+                    "\t[Size],\n" +
+                    "\t[Top],\n" +
+                    "\t[Left],\n" +
+                    "\t[Angle] )\n" +
+                    " VALUES(" +
+                    "\t" + b.getString("ImgName") + ",\n" +
+                    "\t" + b.getByteArray("ImgBody") + ",\n" +
+                    "\t" + b.getInt("ImgFileSize") + ",\n" +
+                    "\t" + b.getFloat("ImgSize") + ",\n" +
+                    "\t" + b.getInt("ImgTop") + ",\n" +
+                    "\t" + b.getInt("ImgLeft") + ",\n" +
+                    "\t" + b.getFloat("ImgAngle") + ",\n" +
+                    "\t)\n");
+    query.append(
+            "DECLARE @Txt_Tbl [antont_co_il_user].TEXTS_TBL" +
+                    "\nINSERT @Txt_Tbl (" +
+                    "\t[Font],\n" +
+                    "\t[Size],\n" +
+                    "\t[Color],\n" +
+                    "\t[Top],\n" +
+                    "\t[Left],\n" +
+                    "\t[Angle],\n" +
+                    "\t[Body] )\n" +
+                    " VALUES(" +
+                    "\t" + "Ariel" + ",\n" +
+                    "\t" + "20" + ",\n" +
+                    "\t" + "Red" + ",\n" +
+                    "\t" + "10" + ",\n" +
+                    "\t" + "50" + ",\n" +
+                    "\t" + "0" + ",\n" +
+                    "\t" + "Hi" + ",\n" +
+                    "\t)\n");
+//string eMail, string phone, string address, string fullName, string city, int zip, int POB, int amount, int pattern, int delivery,
+    query.append("EXEC Canvas_DB_Insert_ALL "+String.valueOf(mail)+", "+String.valueOf(phone)+", "
+            +String.valueOf(address)+", "+String.valueOf(name)+", "+String.valueOf(city)+", "
+            +String.valueOf(zip)+", "+String.valueOf(pob)+", "+String.valueOf(1)+", "
+            +String.valueOf(1)+", "+String.valueOf(1)+", @Pct_Tbl, @Txt_Tbl");
+
+   // query.append("EXEC Canvas_DB_Insert_ALL abc@bca.com, 050505050, home and app, me, jerus, 99999, 1230, 1, 1, 1, @Pct_Tbl, @Txt_Tbl");
+
+    String resTemp = String.valueOf(query);
+        return resTemp;
+    }
+
+  private Connection CONN(String _user, String _pass, String _DB,
+                            String _server) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                .permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        Connection conn = null;
+        String ConnURL = null;
+        try {
+
+          Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
+
+            /*ConnURL = "jdbc:jtds:sqlserver://" + _server + ";"
+                    + "databaseName=" + _DB + ";user=" + _user + ";password="
+                    + _pass + ";";*/
+/*            ConnURL = "jdbc:jtds:sqlserver://" + _server + "//" + _DB + ";instance=//MSSQLSERVER2014;user=" + _user + ";password="
+                    + _pass + ";";*/
+            ConnURL = "jdbc:jtds:sqlserver://" + _server + "//" + _DB+ "//MSSQLSERVER2014";
+
+           conn = DriverManager.getConnection(ConnURL,_user,_pass);
+          //  conn = DriverManager.getConnection(ConnURL);
+
+
+        } catch (SQLException se) {
+            Log.e("ERRO", se.getMessage());
+        } catch (ClassNotFoundException e) {
+            Log.e("ERRO", e.getMessage());
+        } catch (Exception e) {
+            Log.e("ERRO", e.getMessage());
+        }
+        return conn;
     }
 }

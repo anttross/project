@@ -5,15 +5,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.PointF;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,6 +28,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ZoomControls;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 public class EditActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnTouchListener {
     private static final String TAG = "Touch";
@@ -46,9 +52,12 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private static int RESULT_LOAD_IMG = 1;
     String imgDecodableString;
+    int imgOrgSize;
     EditView view;
     EditViewMask mask;
-    ImageView imgView;
+    public ImageView imgView;
+    Uri selectedImage;
+    String uri;
     ImageButton addBtn;
     EditText addEditText;
     Button addTxt;
@@ -88,12 +97,55 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), OrderForm.class));
+                Intent intent = new Intent(getApplicationContext(), OrderForm.class);
+                Bundle b = new Bundle();
+                //String FileName, int FileSize, int Top, int Left, float Size, float Angle, byte[] FileBody
+                b.putString("ImgName", getImgName());
+                b.putInt("ImgFileSize", getImgFileSize());
+                b.putInt("ImgTop", getImgTop());
+                b.putInt("ImgLeft", getImgLeft());
+                b.putFloat("ImgSize", getImgSize());
+                b.putFloat("ImgAngle", getImgAngle());
+                b.putByteArray("ImgBody", getImgBody());
+
+                intent.putExtras(b); //Put your id to your next Intent
+                startActivity(intent);
+                // finish();
+
+
+                 //startActivity(new Intent(getApplicationContext(), OrderForm.class));
 
             }
         });
 
         addBtn = (ImageButton) findViewById(R.id.addPic);
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                Intent i = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, RESULT_LOAD_IMG);
+            }
+        });
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            uri = picturePath;
+            cursor.close();
+            ImageView imageView = (ImageView) findViewById(R.id.imageView);
+            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+        }
+/*
         addBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -103,6 +155,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
 
             }
         });
+*/
 
         textSizeChange = (Spinner) findViewById(R.id.textSizeSpinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditActivity.this,
@@ -215,6 +268,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
 
+/*
     private void loadImagefromGallery(View view) {
         // Create intent to Open Image applications like Gallery, Google Photos
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
@@ -222,8 +276,10 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         // Start the Intent
         startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
     }
+*/
 
     @Override
+/*
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
@@ -232,7 +288,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
                     && null != data) {
                 // Get the Image from data
 
-                Uri selectedImage = data.getData();
+                selectedImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA };
 
                 // Get the cursor
@@ -259,6 +315,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
     }
+*/
 
     public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
 
@@ -287,8 +344,49 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-/*    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        return false;
-    }*/
+    public byte[] getImgBody(){
+      //  return imgView.getImageMatrix();
+        Uri path = Uri.parse(uri);
+       // convertedPath = ;
+        Bitmap bitmap = BitmapFactory.decodeFile((uri));
+
+       // BitmapDrawable drawable = (BitmapDrawable) imgView.getDrawable();
+        // Bitmap bitmap = drawable.getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] imageInByte = stream.toByteArray();
+        //long lengthbmp = imageInByte.length;
+        return imageInByte;
+    }
+
+    public int getImgFileSize(){
+        BitmapDrawable drawable = (BitmapDrawable) imgView.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] imageInByte = stream.toByteArray();
+        int lengthbmp = imageInByte.length;
+        return lengthbmp;
+    }
+    public String getImgName(){
+        //File file = new File(String.valueOf(selectedImage));
+        //return file.getName();
+        return uri;
+    }
+    public float getImgSize(){
+        Display display = getWindowManager().getDefaultDisplay();
+        return imgView.getWidth()/(display.getWidth()-80);
+    }
+
+    public int getImgTop(){
+        return imgView.getTop();
+    }
+
+    public int getImgLeft(){
+        return imgView.getLeft();
+    }
+
+    public float getImgAngle(){
+        return 0;
+    }
 }
