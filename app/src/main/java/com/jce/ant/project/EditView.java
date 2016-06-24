@@ -41,7 +41,6 @@ public class EditView extends View {
         int w = getWidth();//-border;
         int h = getHeight();//-border;
         int side= (w<h?w:h);
-
         //canvas.drawRect((w-side)/2, 0, (w-side)/2+side, side*3/2, paint);
         paint.setStyle(Paint.Style.STROKE);
 
