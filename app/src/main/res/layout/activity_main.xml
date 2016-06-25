@@ -9,29 +9,66 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.jce.ant.project.MainActivity">
 
-    <TextView
-        android:id="@+id/chooseFormat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textDirection="anyRtl"
-        android:text="@string/chooseFormatLbl" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/mainView"
-        android:src="@drawable/kiss"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
-    <Button
+    <!--<Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Continue"
         android:id="@+id/startButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+-->
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAligned="false">
+
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/pattern1"
+                android:src="@drawable/pattern1"
+                android:paddingRight="@dimen/activity_vertical_margin"
+                android:layout_column="0"
+                android:layout_gravity="top"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/pattern2"
+                android:src="@drawable/pattern1"
+                android:paddingLeft="@dimen/activity_vertical_margin"
+                android:layout_column="1"
+                android:layout_gravity="top"
+                android:layout_weight="1" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAligned="false">
+
+            <TextView
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/lblPat1"
+                android:id="@+id/lblPat1"
+                android:layout_column="2"
+                android:layout_gravity="top"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent" />
+        </TableRow>
+    </TableLayout>
+
+
 
 
 </RelativeLayout>

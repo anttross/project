@@ -17,9 +17,11 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -39,6 +41,9 @@ public class OrderForm extends AppCompatActivity {
     SharedPreferences.Editor editor;
     // public static final String shPref = "sharedPrefs";
     Button placeOrder;
+    private Spinner delivery;
+    private static final String[] paths = {"איסוף עצמי", "דואר ישראל", "שליח עד הבית"};
+
     /*String fileName;
     int fileSize, top, left;
     float size, angle;
@@ -77,6 +82,13 @@ public class OrderForm extends AppCompatActivity {
         phone.setText(prefs.getString("phone", phone.getText().toString()));
 
 
+        delivery = (Spinner) findViewById(R.id.delivery);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(OrderForm.this,
+                android.R.layout.simple_spinner_item, paths);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        delivery.setAdapter(adapter);
+        //delivery.setOnItemSelectedListener();
 
 
         Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8
@@ -149,6 +161,7 @@ public class OrderForm extends AppCompatActivity {
         });
 
     }
+
     private String BuildProcedureWithParameters() {
         Bundle b = getIntent().getExtras();
         if(b==null)
@@ -264,4 +277,6 @@ public class OrderForm extends AppCompatActivity {
         String encodedImage=Base64.encodeBytes(imageInByte);
         return encodedImage;
     }
+
+
 }
